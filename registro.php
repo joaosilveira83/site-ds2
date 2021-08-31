@@ -33,47 +33,65 @@
                 </h1>
                 <p class="login-box-msg text-center">Crie sua conta gratuita</p>
 
-                <form action="validaLogin.php" method="post" id="formCriaConta">
+                <?php session_start();
+                if (isset($_GET['erro'])) {
+                    $dadosForm = @$_SESSION['dadosForm'];
+                    $erro = @$_SESSION['erro'];
+                }
+
+                ?>
+
+                <form action="cria-conta.php" method="post" id="formCriaConta">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
                         </div>
-                        <input type="text" name="nome" id="nome" class="form-control" placeholder="Nome completo" aria-label="nomeCompleto" aria-describedby="basic-addon1">
+                        <input type="text" name="nome" class="form-control" placeholder="Nome completo" aria-label="nome" aria-describedby="basic-addon1" value="<?php echo @$dadosForm['nome']; ?>">
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-envelope"></i></span>
                         </div>
-                        <input type="text" name="email" id="email" class="form-control" placeholder="E-mail" aria-label="E-mail" aria-describedby="basic-addon1">
+                        <input type="text" name="email" class="form-control" placeholder="E-mail" aria-label="E-mail" aria-describedby="basic-addon1" value="<?php echo @$dadosForm['email']; ?>">
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
                         </div>
-                        <input type="password" name="senha" id="senha" class="form-control" placeholder="Senha" aria-label="Senha" aria-describedby="basic-addon1">
+                        <input type="password" name="senha" id="senha" class="form-control" placeholder="Senha" aria-label="Senha" aria-describedby="basic-addon1" value="<?php echo @$dadosForm['senha']; ?>">
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
                         </div>
-                        <input type="password" name="confirmaSenha" id="confirmaSenha" class="form-control" placeholder="Repita a senha" aria-label="Repita a senha" aria-describedby="basic-addon1">
+                        <input type="password" name="confirmaSenha" class="form-control" placeholder="Repita a senha" aria-label="Repita a senha" aria-describedby="basic-addon1" value="<?php echo @$dadosForm['confirmaSenha']; ?>">
                     </div>
 
+                    <?php if (@$dadosForm['termos'] == 'on') {
+                        $checked = "checked='checked'";
+                    } ?>
                     <div class="form-group form-check">
-                        <input type="checkbox" name="termos" class="form-check-input" id="termos">
-                        <label class="form-check-label" for="exampleCheck1">
-                            Aceitar os <a href="#" data-toggle="modal" data-target="#modalTermos">termos</a>
-                        </label>
+                        <input type="checkbox" name="termos" class="form-check-input" id="termos" <?php echo @$checked; ?>>
+                        <label class="form-check-label" for="exampleCheck1">Aceitar os <a href="#" data-toggle="modal" data-target="#modalTermos">termos</a> </label>
                     </div>
+
+                    <?php if (isset($_GET['erro'])) {
+                        echo "<ul class='alert alert-danger'>";
+                        foreach ($_SESSION['mensagemErro'] as $erro) {
+                            echo "<li>
+                                        $erro
+                                      </li>";
+                        }
+                        echo "</ul>";
+                    } ?>
 
                     <div class="form-group text-right">
                         <button type="submit" class="btn btn-primary">Cadastrar</button>
                     </div>
                 </form>
-
                 <p class="mb-1">
                     <a href="login.php">Já tenho uma conta</a>
                 </p>
@@ -83,30 +101,30 @@
 
     </main><!-- /.container -->
 
-<!-- Modal -->
-<div class="modal fade" id="modalTermos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Termos DS2</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        
-        <h1 class="h5">Nossos termos</h1>
+    <!-- Modal -->
+    <div class="modal fade" id="modalTermos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Termos DS2</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt id pariatur, quae nesciunt, consequatur voluptatibus quam atque cupiditate aliquid nemo ratione. Nam tenetur repudiandae dolores officiis, nihil dolorem iste veniam.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, vero deleniti quidem quae corporis possimus. Laudantium molestiae ut natus ab totam corporis eos optio quod laboriosam accusantium. Sapiente, atque sit?</p>
+                    <h1 class="h5">Nossos termos</h1>
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt id pariatur, quae nesciunt, consequatur voluptatibus quam atque cupiditate aliquid nemo ratione. Nam tenetur repudiandae dolores officiis, nihil dolorem iste veniam.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, vero deleniti quidem quae corporis possimus. Laudantium molestiae ut natus ab totam corporis eos optio quod laboriosam accusantium. Sapiente, atque sit?</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
     <!-- Principal JavaScript do Bootstrap
     ================================================== -->
@@ -122,15 +140,15 @@
                         required: true
                     },
                     email: {
-                      required: true,
-                      email: true
+                        required: true,
+                        email: true
                     },
                     senha: {
-                      required: true,
-                      minlength: 6
-                    }, 
+                        required: true,
+                        minlength: 6
+                    },
                     confirmaSenha: {
-                      equalTo: "#senha"
+                        equalTo: "#senha"
                     },
                     termos: {
                         required: true
@@ -141,15 +159,15 @@
                         required: "O campo nome é obrigatório"
                     },
                     email: {
-                      required: "Informe o seu e-mail",
-                      email: "Utilize um e-mail válido"
+                        required: "Informe o seu e-mail",
+                        email: "Utilize um e-mail válido"
                     },
                     senha: {
-                      required: "A senha é obrigatória",
-                      minlength: "A senha deve ter no mínimo 6 caracteres"
+                        required: "A senha é obrigatória",
+                        minlength: "A senha deve ter no mínimo 6 caracteres"
                     },
                     confirmaSenha: {
-                      equalTo: "Senhas não conferem"
+                        equalTo: "Senhas não conferem"
                     },
                     termos: {
                         required: "Você deve aceitar os temos para criar a conta"
@@ -158,7 +176,7 @@
                 errorElement: 'span',
                 errorPlacement: function(error, element) {
                     error.addClass('invalid-feedback');
-                    
+
                     if (element.prop("type") === "checkbox") {
                         error.insertAfter(element.next("label"));
                     } else {
